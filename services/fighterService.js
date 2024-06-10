@@ -1,9 +1,32 @@
-import { fighterRepository } from "../repositories/fighterRepository.js";
+import FighterRepository from '../repositories/fighterRepository.js';
+import Fighter from '../models/fighter.js';
 
 class FighterService {
-  // TODO: Implement methods to work with fighters
+    getAllFighters() {
+        return FighterRepository.getAll();
+    }
+
+    getFighterById(id) {
+        return FighterRepository.getById(id);
+    }
+
+    createFighter(fighterData) {
+        Fighter.validate(fighterData);
+        const fighter = new Fighter(fighterData);
+        return FighterRepository.create(fighter);
+    }
+
+    updateFighter(id, fighterData) {
+        if (fighterData.id) {
+            throw new Error('ID should not be included in the update data');
+        }
+        Fighter.validate(fighterData);
+        return FighterRepository.update(id, fighterData);
+    }
+
+    deleteFighter(id) {
+        return FighterRepository.delete(id);
+    }
 }
 
-const fighterService = new FighterService();
-
-export { fighterService };
+export default new FighterService();

@@ -1,6 +1,8 @@
-const responseMiddleware = (req, res, next) => {
-  // TODO: Implement middleware that returns result of the query
-  next();
+export const responseMiddleware = (req, res) => {
+    if (res.error) {
+        res.status(400).json({ error: res.error.message });
+    } else {
+        res.json(res.data);
+    }
 };
 
-export { responseMiddleware };

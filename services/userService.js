@@ -1,17 +1,34 @@
-import { userRepository } from "../repositories/userRepository.js";
+import UserRepository from '../repositories/userRepository.js';
+import User from '../models/user.js';
 
 class UserService {
-  // TODO: Implement methods to work with user
-
-  search(search) {
-    const item = userRepository.getOne(search);
-    if (!item) {
-      return null;
+    getAllUsers() {
+        return UserRepository.getAll();
     }
-    return item;
-  }
+
+    getUserById(id) {
+        return UserRepository.getById(id);
+    }
+
+    createUser(userData) {
+        User.validate(userData);
+        const user = new User(userData);
+        return UserRepository.create(user);
+    }
+
+    updateUser(id, userData) {
+        if (userData.id) {
+            throw new Error('ID should not be included in the update data');
+        }
+        User.validate(userData);
+        return UserRepository.update(id, userData);
+    }
+
+    deleteUser(id) {
+        return UserRepository.delete(id);
+    }
 }
 
-const userService = new UserService();
+export default new UserService();
 
-export { userService };
+
